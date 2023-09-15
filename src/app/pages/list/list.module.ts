@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ListRoutingModule } from './list-routing.module';
 import { ListPage } from './list.page';
-import { TableModule } from 'src/app/components/table/table.module';
-
+import { TableMaterialsModule } from 'src/app/components/table/table-materials.module';
 
 @NgModule({
   declarations: [
@@ -13,7 +12,7 @@ import { TableModule } from 'src/app/components/table/table.module';
   imports: [
     CommonModule,
     ListRoutingModule,
-    TableModule
+    TableMaterialsModule
   ]
 })
 export class ListModule { }
