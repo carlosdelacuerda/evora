@@ -5,17 +5,23 @@ import { TableModule } from 'primeng/table';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ButtonModule } from 'primeng/button';
 import { TableContainerComponent } from './table-container/table-container.component';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { ToastModule } from 'primeng/toast';
+import { DetailComponent } from './detail/detail.component';
 
 @NgModule({
   declarations: [
     TableListComponent,
-    TableContainerComponent
+    TableContainerComponent,
+    DetailComponent
   ],
   imports: [
     CommonModule,
     TableModule,
     InputNumberModule,
-    ButtonModule
+    ButtonModule,
+    DynamicDialogModule,
+    ToastModule
   ],
   exports: [
     TableContainerComponent
