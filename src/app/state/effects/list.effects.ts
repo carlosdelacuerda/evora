@@ -16,6 +16,7 @@ export class ListEffects {
         mergeMap(() => this.listService.getAllMaterials()
             .pipe(
                 first(),
+                map((materials) => materials.d.PartSet.results),
                 map((materials) => ({type: '[List] list success', materials })),
                 catchError((error) => of({ type: '[List] list error', error}))
             ))

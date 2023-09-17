@@ -21,15 +21,15 @@ export class TableListComponent {
 
   @Input() materialsList: MaterialInterface[] = []
 
-  show(material:MaterialInterface) {
+  show(material:string, rowIndex:number) {
     this.ref = this.dialogService.open(DetailComponent, {
-      data: material,
+      data: rowIndex,
       width: '70%',
-      height: '90%',
+      height: '100%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10,
       maximizable: true,
-      header: material.DescTxt,
+      header: material,
       showHeader: true,
       dismissableMask: true,
       styleClass: 'detail-modal'

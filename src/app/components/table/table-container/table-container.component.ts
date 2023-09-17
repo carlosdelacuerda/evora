@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs';
 import { MaterialInterface } from 'src/app/interfaces/material.interface';
-import { actionList } from 'src/app/state/actions/list.actions';
+import { actionList, actionStoreDBMaterials } from 'src/app/state/actions/list.actions';
 import { selectListSuccess } from 'src/app/state/selectors/list.selectors';
 
 @Component({
@@ -58,13 +58,14 @@ export class TableContainerComponent implements OnInit {
         this.getRemoteMaterials()
         return
       }  
-      const store = transaction.objectStore("materials");
-      const dbMaterials = store.getAll();
+      const storeDB = transaction.objectStore("materials");
+      const dbMaterials = storeDB.getAll();
       dbMaterials.onsuccess = () => {
         this.materialsList = dbMaterials.result;
-        if (this.materialsList.length == 0) {
-          this.getRemoteMaterials()
-        }
+        const materialsDeconstruct = {material:[...this.materialsList]};
+        (this.materialsList.length == 0) ?
+        this.getRemoteMaterials() :
+        this.store.dispatch(actionStoreDBMaterials(materialsDeconstruct))
       };
       transaction.oncomplete = () => {
         db.close();
@@ -74,11 +75,11 @@ export class TableContainerComponent implements OnInit {
 
   getRemoteMaterials(){
     this.store.dispatch(actionList());
-    this.store.select(selectListSuccess).pipe(
+    const store$ = this.store.select(selectListSuccess).pipe(
       take(2)
     )
-    .subscribe(({materials}:any) => {
-      this.materialsList = materials.d.PartSet.results;
+    store$.subscribe(({materials}:any) => {
+      this.materialsList = materials;
       if (this.browserAllowDB && (this.materialsList.length > 0)) {
         this.createDB(this.materialsList)
       }

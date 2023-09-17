@@ -1,0 +1,5 @@
+<div class="alert-amount red">
+    <small>Only {{ material.Available }} available</small>   
+</div> 
+<p-inputNumber [style]="{'width':'100%'}" [inputStyle]="{'width':'90px'}" mode="decimal" [min]="0" [max]="-material.Available"></p-inputNumber>
+<p-button label="Book"></p-button>

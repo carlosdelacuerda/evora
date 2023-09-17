@@ -4,3 +4,13 @@
     grid-gap: 5px;
     grid-auto-rows: minmax(100px, auto);
   }
+.book {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  border-top: 1px solid grey;
+  padding-top: 10px;
+}
+app-book {
+  margin-left: auto;
+}

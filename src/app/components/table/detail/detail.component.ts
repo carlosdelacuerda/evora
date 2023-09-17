@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { MaterialInterface } from 'src/app/interfaces/material.interface';
+import { selectListSuccess } from 'src/app/state/selectors/list.selectors';
 
 @Component({
   selector: 'app-detail',
@@ -28,11 +30,21 @@ export class DetailComponent implements OnInit {
     TSPercentageCounter:'' 
   }
 
+  rowIndex: number = 0;
+
   constructor (
-    public config: DynamicDialogConfig
+    public config: DynamicDialogConfig,
+    private store: Store
     ) {}
 
   ngOnInit(): void {
+    this.getMaterial()
+  }
+
+  getMaterial() {
+    this.store.select(selectListSuccess).subscribe(
+      x => console.log('detail', x)
+    )
     this.material = this.config.data;
   }
 
