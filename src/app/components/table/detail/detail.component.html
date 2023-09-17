@@ -17,6 +17,10 @@
     <div><h3>TSPercentageCounter</h3><span>{{material.TSPercentageCounter}}</span></div>
 </div>
 <div class="book">
-    <app-book [material]="material" class="detail-book"></app-book>
+    <div class="navigate">
+        <p-button [disabled]="rowIndex === 0" (onClick)="navigateMaterial(rowIndex-1)" icon="pi pi-chevron-left" styleClass="p-button-rounded"></p-button>
+        <p-button [disabled]="rowIndex == (materials.length - 1)" (onClick)="navigateMaterial(rowIndex+1)" icon="pi pi-chevron-right" styleClass="p-button-rounded"></p-button>
+    </div>
+    <app-book [rowIndex]="rowIndex" class="detail-book"></app-book>
 </div>
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { MaterialInterface } from 'src/app/interfaces/material.interface';
@@ -10,6 +10,8 @@ import { selectListSuccess } from 'src/app/state/selectors/list.selectors';
   styleUrls: ['./detail.component.scss']
 })
 export class DetailComponent implements OnInit {
+
+  materials: MaterialInterface[] = [];
 
   material: MaterialInterface = {
     Material: '',
@@ -38,14 +40,20 @@ export class DetailComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
+    this.rowIndex = this.config.data;
+    this.store.select(selectListSuccess).subscribe( ({materials}:any) =>
+      this.materials = materials
+    )
     this.getMaterial()
   }
 
   getMaterial() {
-    this.store.select(selectListSuccess).subscribe(
-      x => console.log('detail', x)
-    )
-    this.material = this.config.data;
+    this.material = this.materials[this.rowIndex]
+  }
+
+  navigateMaterial(newRowIndex:number) {
+    this.rowIndex = newRowIndex;
+    this.getMaterial()
   }
 
 }

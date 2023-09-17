@@ -20,7 +20,7 @@
                 <td>{{material.Quantity}}</td>
                 <td>{{material.Available}}</td>
                 <td>
-                    <app-book [material]="material"></app-book>         
+                    <app-book [rowIndex]="rowIndex"></app-book>         
                 </td>
                 <td><i (click)="show(material.DescTxt, rowIndex)" class="pi pi-eye"></i></td>
             </tr>
