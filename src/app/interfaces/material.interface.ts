@@ -27,8 +27,8 @@ export interface MaterialsListInterface {
     }
 }
 
-export interface reducerListInterface {
+export interface ReducerListInterface {
     type: string,
     error?: any,
-    materials: MaterialsListInterface
+    materials: MaterialInterface[]
 }

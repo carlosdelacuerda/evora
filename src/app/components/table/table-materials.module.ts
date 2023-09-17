@@ -8,12 +8,14 @@ import { TableContainerComponent } from './table-container/table-container.compo
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ToastModule } from 'primeng/toast';
 import { DetailComponent } from './detail/detail.component';
+import { BookComponent } from './book/book.component';
 
 @NgModule({
   declarations: [
     TableListComponent,
     TableContainerComponent,
-    DetailComponent
+    DetailComponent,
+    BookComponent
   ],
   imports: [
     CommonModule,

@@ -1,18 +1,10 @@
 import { createReducer, on } from '@ngrx/store';
 import * as actions from '../actions/list.actions';
-import {  reducerListInterface } from 'src/app/interfaces/material.interface';
+import {  ReducerListInterface } from 'src/app/interfaces/material.interface';
 
-  export const initialListState: reducerListInterface = {
+  export const initialListState: ReducerListInterface = {
     type: '',
-    materials: {
-      d : {
-        FrontId: "",
-        NotificationNo: "",
-        PartSet: {
-          results: []
-        }
-      }
-    }
+    materials: []
   };
 
   export const materialsReducer = createReducer (
@@ -22,11 +14,15 @@ import {  reducerListInterface } from 'src/app/interfaces/material.interface';
         return initialListState
     }),
 
-    on(actions.actionListSuccess, (state, list) => {
+    on(actions.actionListSuccess, (state, {...list}) => {
         return {...state, ...list}
     }),
 
     on(actions.actionListError, (state, error) => {
         return {...state, error}
-    } )
+    } ),
+
+    on(actions.actionStoreDBMaterials, (state, {...list}) => {
+      return {...state, materials:list.material, type:list.type}
+  } )
   )

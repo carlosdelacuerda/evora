@@ -1,18 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { MaterialInterface } from 'src/app/interfaces/material.interface';
 import { selectListSuccess } from 'src/app/state/selectors/list.selectors';
 
 @Component({
-  selector: 'app-detail',
-  templateUrl: './detail.component.html',
-  styleUrls: ['./detail.component.scss']
+  selector: 'app-book',
+  templateUrl: './book.component.html',
+  styleUrls: ['./book.component.scss']
 })
-export class DetailComponent implements OnInit {
+export class BookComponent implements OnInit {
 
-  materials: MaterialInterface[] = [];
-
+  @Input() rowIndex: number = 0;
   material: MaterialInterface = {
     Material: '',
     Quantity: '',
@@ -32,30 +30,14 @@ export class DetailComponent implements OnInit {
     TSPercentageCounter:'' 
   }
 
-  rowIndex: number = 0;
-
   constructor (
-    public config: DynamicDialogConfig,
-    private store: Store
-    ) {}
+    public store: Store
+  ) {}
 
   ngOnInit(): void {
-    this.rowIndex = this.config.data;
     this.store.select(selectListSuccess).subscribe( ({materials}:any) =>
-      this.materials = materials
+      this.material = materials[this.rowIndex]
     )
-    this.getMaterial()
-  }
-
-  getMaterial() {
-    this.material = this.materials[this.rowIndex]
-  }
-
-  navigateMaterial(newRowIndex:number) {
-    this.rowIndex = newRowIndex;
-    this.getMaterial()
   }
 
 }
-
-
