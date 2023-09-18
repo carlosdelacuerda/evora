@@ -71,7 +71,8 @@ export class BookComponent implements OnInit {
       };
       request.onsuccess = (event) => {
         const data = request.result;
-        data.Available = data.Available -amount;
+        data.Available = (+data.Available -amount).toString();
+        data.Quantity = (+data.Quantity +amount).toString();
         const requestUpdate = store.put(data);
         requestUpdate.onerror = (event) => {
           alert('Book error')
