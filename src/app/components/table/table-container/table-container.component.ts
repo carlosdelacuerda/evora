@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { take } from 'rxjs';
+import { Observable, Subscription, take } from 'rxjs';
 import { MaterialInterface } from 'src/app/interfaces/material.interface';
 import { actionList, actionStoreDBMaterials } from 'src/app/state/actions/list.actions';
 import { selectListSuccess } from 'src/app/state/selectors/list.selectors';
@@ -10,10 +10,12 @@ import { selectListSuccess } from 'src/app/state/selectors/list.selectors';
   templateUrl: './table-container.component.html',
   styleUrls: ['./table-container.component.scss']
 })
-export class TableContainerComponent implements OnInit {
+export class TableContainerComponent implements OnInit, OnDestroy {
 
   materialsList: MaterialInterface[] = [];
   browserAllowDB: boolean = true;
+  store$: Observable<MaterialInterface[]> = new Observable;
+  subscription: Subscription = new Subscription;
 
   constructor(
     private store: Store
@@ -21,6 +23,10 @@ export class TableContainerComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkIndexedDB()
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe()
   }
 
   checkIndexedDB() {
@@ -68,6 +74,10 @@ export class TableContainerComponent implements OnInit {
         this.store.dispatch(actionStoreDBMaterials(materialsDeconstruct))
       };
       transaction.oncomplete = () => {
+        this.store$ = this.store.select(selectListSuccess)
+        this.subscription = 
+        this.store$.subscribe(({materials}:any) => {
+          this.materialsList = materials;})
         db.close();
       };
     }
@@ -75,10 +85,8 @@ export class TableContainerComponent implements OnInit {
 
   getRemoteMaterials(){
     this.store.dispatch(actionList());
-    const store$ = this.store.select(selectListSuccess).pipe(
-      take(2)
-    )
-    store$.subscribe(({materials}:any) => {
+    this.store$ = this.store.select(selectListSuccess)
+    this.subscription = this.store$.subscribe(({materials}:any) => {
       this.materialsList = materials;
       if (this.browserAllowDB && (this.materialsList.length > 0)) {
         this.createDB(this.materialsList)

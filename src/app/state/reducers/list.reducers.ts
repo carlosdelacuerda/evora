@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import * as actions from '../actions/list.actions';
-import {  ReducerListInterface } from 'src/app/interfaces/material.interface';
+import {  MaterialInterface, ReducerListInterface } from 'src/app/interfaces/material.interface';
 
   export const initialListState: ReducerListInterface = {
     type: '',
@@ -24,5 +24,11 @@ import {  ReducerListInterface } from 'src/app/interfaces/material.interface';
 
     on(actions.actionStoreDBMaterials, (state, {...list}) => {
       return {...state, materials:list.material, type:list.type}
-  } )
+    } ),
+
+    on(actions.actionUpdateData, (state, {material, index}) => {
+      let updated = [...state.materials]
+      updated[index] = material
+      return {...state, materials: updated}
+    })
   )

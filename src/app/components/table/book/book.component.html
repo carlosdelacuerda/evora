@@ -1,5 +1,17 @@
-<div class="alert-amount red">
-    <small>Only {{ material.Available }} available</small>   
-</div> 
-<p-inputNumber [style]="{'width':'100%'}" [inputStyle]="{'width':'90px'}" mode="decimal" [min]="0" [max]="-material.Available"></p-inputNumber>
-<p-button label="Book"></p-button>
+<form [formGroup]="formGroup">
+    <div class="alert-amount red"
+    *ngIf="this.formGroup.get('amount')?.errors?.['max']">
+        <small>Only {{ material.Available }} available</small>   
+    </div> 
+    <p-inputNumber formControlName="amount"
+        [style]="{'width':'100%'}"
+        [inputStyle]="{'width':'90px'}"
+        mode="decimal"
+        [min]="0"
+        >
+    </p-inputNumber>
+    <p-button label="Book"
+        (click)="book()"
+        [disabled]="formGroup.invalid">
+    </p-button> 
+</form>

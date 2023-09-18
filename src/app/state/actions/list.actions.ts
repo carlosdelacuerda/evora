@@ -19,3 +19,8 @@ export const actionStoreDBMaterials = createAction(
     '[List] Store the materials from DB',
     props<{material:MaterialInterface[]}>()
 )
+
+export const actionUpdateData = createAction(
+    '[List] Update amount of materials',
+    props<{ material:any, index:number }>()
+)

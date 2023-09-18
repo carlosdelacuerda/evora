@@ -9,6 +9,7 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ToastModule } from 'primeng/toast';
 import { DetailComponent } from './detail/detail.component';
 import { BookComponent } from './book/book.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { BookComponent } from './book/book.component';
     InputNumberModule,
     ButtonModule,
     DynamicDialogModule,
-    ToastModule
+    ToastModule,
+    ReactiveFormsModule
   ],
   exports: [
     TableContainerComponent
