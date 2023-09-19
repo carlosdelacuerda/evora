@@ -9,10 +9,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ROOT_REDUCERS } from './state/app.state';
 import { EffectsModule } from '@ngrx/effects';
 import { ListEffects } from './state/effects/list.effects';
+import { FilterPipe } from './pipes/filter.pipe';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,

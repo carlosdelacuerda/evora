@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription, take } from 'rxjs';
+import { FilterMaterial } from 'src/app/interfaces/filter.interface';
 import { MaterialInterface } from 'src/app/interfaces/material.interface';
+import { FilterPipe } from 'src/app/pipes/filter.pipe';
 import { actionList, actionStoreDBMaterials } from 'src/app/state/actions/list.actions';
 import { selectListSuccess } from 'src/app/state/selectors/list.selectors';
 
@@ -17,6 +19,8 @@ export class TableContainerComponent implements OnInit, OnDestroy {
   store$: Observable<MaterialInterface[]> = new Observable;
   subscription: Subscription = new Subscription;
 
+  filterPipe = new FilterPipe()
+
   constructor(
     private store: Store
   ) {}
@@ -27,6 +31,19 @@ export class TableContainerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe()
+  }
+
+  filter(e:string) {
+    this.store.select(selectListSuccess).pipe(
+      take(1)
+    )
+    .subscribe((res:any) => {    
+      let objectFilter:FilterMaterial = {
+        materials: res.materials,
+        filter: e
+      }
+      this.materialsList = this.filterPipe.transform(objectFilter)
+    })
   }
 
   checkIndexedDB() {
