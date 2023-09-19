@@ -33,14 +33,14 @@ export class TableContainerComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe()
   }
 
-  filter(e:string) {
+  filter(filter:string) {
     this.store.select(selectListSuccess).pipe(
       take(1)
     )
     .subscribe((res:any) => {    
       let objectFilter:FilterMaterial = {
         materials: res.materials,
-        filter: e
+        filter: filter
       }
       this.materialsList = this.filterPipe.transform(objectFilter)
     })

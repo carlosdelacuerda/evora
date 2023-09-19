@@ -12,9 +12,8 @@ import { selectListSuccess } from 'src/app/state/selectors/list.selectors';
 })
 export class DetailComponent implements OnInit {
 
-  materials: MaterialInterface[] = [];
-
   material: MaterialInterface = {
+    id: 0,
     Material: '',
     Quantity: '',
     DescTxt: '',
@@ -33,6 +32,10 @@ export class DetailComponent implements OnInit {
     TSPercentageCounter:'' 
   }
 
+  materials: MaterialInterface[] = [
+    this.material
+  ];
+
   rowIndex: number = 0;
 
   constructor (
@@ -43,13 +46,13 @@ export class DetailComponent implements OnInit {
   ngOnInit(): void {
     this.rowIndex = this.config.data;
     this.store.select(selectListSuccess).subscribe( pipe(({materials}:any) => {
-      this.materials = materials
+      this.materials = materials;
       this.getMaterial()
     }))  
   }
 
   getMaterial() {
-    this.material = this.materials[this.rowIndex]
+    this.material = this.materials.find((mat) => mat.id == this.rowIndex)!
   }
 
   navigateMaterial(newRowIndex:number) {

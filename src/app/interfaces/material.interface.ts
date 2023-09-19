@@ -1,4 +1,5 @@
 export interface MaterialInterface {
+    id: number,
     Material: string,
     Quantity: string,
     DescTxt: string,
