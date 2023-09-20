@@ -5,10 +5,14 @@ import { EventEmitter, Injectable } from '@angular/core';
 })
 export class FilterTextService {
 
-  $emitter = new EventEmitter();
+  $emitterFilter = new EventEmitter();
+  $emitterResetInput = new EventEmitter();
 
-  public emitEvent() {
-    this.$emitter.emit();
+  public emitFilter() {
+    this.$emitterFilter.emit();
   } 
 
+  public emitResetInput() {
+    this.$emitterResetInput.emit();
+  }
 }

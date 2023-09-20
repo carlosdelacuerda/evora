@@ -30,7 +30,7 @@ export class ListService {
       const store = transaction.objectStore("materials");
       const request = store.get(idMaterial)
       request.onerror = () => {
-        alert()
+        alert('Request error')
       };
       request.onsuccess = () => {
         const data = request.result;
@@ -41,9 +41,10 @@ export class ListService {
           alert('Book error')
         };
         requestUpdate.onsuccess = () =>{
-          this.store.dispatch(actionUpdateData({material:data, index:idMaterial-1}));
-          alert('Book success');
-          this.filterTextService.emitEvent()
+          setTimeout(() => {
+            this.store.dispatch(actionUpdateData({material:data, index:idMaterial-1}));
+            this.filterTextService.emitFilter()
+          }, 1000); 
         };
       };
     }

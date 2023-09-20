@@ -23,7 +23,7 @@ export class TableListComponent {
 
   show(material:string, rowIndex:number) {
     this.ref = this.dialogService.open(DetailComponent, {
-      data: rowIndex,
+      data: rowIndex-1,
       width: '70%',
       height: '100%',
       contentStyle: { overflow: 'auto' },
