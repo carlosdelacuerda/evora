@@ -4,6 +4,7 @@ import { Observable, Subscription, take } from 'rxjs';
 import { FilterMaterial } from 'src/app/interfaces/filter.interface';
 import { MaterialInterface } from 'src/app/interfaces/material.interface';
 import { FilterPipe } from 'src/app/pipes/filter.pipe';
+import { ListService } from 'src/app/services/list.service';
 import { actionList, actionStoreDBMaterials } from 'src/app/state/actions/list.actions';
 import { selectListSuccess } from 'src/app/state/selectors/list.selectors';
 
@@ -22,7 +23,8 @@ export class TableContainerComponent implements OnInit, OnDestroy {
   filterPipe = new FilterPipe()
 
   constructor(
-    private store: Store
+    private store: Store,
+    public listService: ListService
   ) {}
 
   ngOnInit(): void {
@@ -33,14 +35,14 @@ export class TableContainerComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe()
   }
 
-  filter(e:string) {
+  filter(filter:string) {
     this.store.select(selectListSuccess).pipe(
       take(1)
     )
     .subscribe((res:any) => {    
       let objectFilter:FilterMaterial = {
         materials: res.materials,
-        filter: e
+        filter: filter
       }
       this.materialsList = this.filterPipe.transform(objectFilter)
     })
@@ -51,23 +53,6 @@ export class TableContainerComponent implements OnInit, OnDestroy {
     this.browserAllowDB ?
     this.getDBMaterials() :
     this.getRemoteMaterials();
-  }
-
-  createDB(materials:MaterialInterface[]) {
-    indexedDB.deleteDatabase("MaterialsDatabase");
-    const request = indexedDB.open("MaterialsDatabase", 1);
-    request.onupgradeneeded = () => {
-      const db = request.result;
-      db.createObjectStore("materials", { keyPath: "id", autoIncrement: true });
-    };
-    request.onsuccess = () => {
-      const db = request.result;
-      const transaction = db.transaction("materials", "readwrite");
-      const store = transaction.objectStore("materials");
-      materials.forEach((material) => {
-        store.put(material)
-      });
-    };
   }
 
   getDBMaterials() {
@@ -106,7 +91,7 @@ export class TableContainerComponent implements OnInit, OnDestroy {
     this.subscription = this.store$.subscribe(({materials}:any) => {
       this.materialsList = materials;
       if (this.browserAllowDB && (this.materialsList.length > 0)) {
-        this.createDB(this.materialsList)
+        this.listService.createDB(this.materialsList)
       }
     });
   } 

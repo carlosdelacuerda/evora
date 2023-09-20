@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
+import { FilterTextService } from 'src/app/services/filter.service';
 
 @Component({
   selector: 'app-filter',
@@ -11,7 +11,11 @@ export class FilterComponent {
   value: string = '';
   @Output() filterMaterials = new EventEmitter<string>();
 
-  constructor() {}
+  constructor(service: FilterTextService) {
+    service.$emitter.subscribe(() => {
+      this.filter()
+    });
+  }
 
   filter() {
     this.filterMaterials.emit(this.value)
