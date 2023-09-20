@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MaterialsListInterface } from '../interfaces/material.interface';
+import { MaterialInterface, MaterialsListInterface } from '../interfaces/material.interface';
 import { Store } from '@ngrx/store';
 import { FilterTextService } from './filter.service';
-import { actionUpdateData } from '../state/actions/list.actions';
+import { actionList, actionStoreDBMaterials, actionUpdateData } from '../state/actions/list.actions';
+import { selectListSuccess } from '../state/selectors/list.selectors';
 
 @Injectable({
   providedIn: 'root'
@@ -48,5 +49,20 @@ export class ListService {
     }
   }
 
-
+  createDB(materials:MaterialInterface[]) {
+    indexedDB.deleteDatabase("MaterialsDatabase");
+    const request = indexedDB.open("MaterialsDatabase", 1);
+    request.onupgradeneeded = () => {
+      const db = request.result;
+      db.createObjectStore("materials", { keyPath: "id", autoIncrement: true });
+    };
+    request.onsuccess = () => {
+      const db = request.result;
+      const transaction = db.transaction("materials", "readwrite");
+      const store = transaction.objectStore("materials");
+      materials.forEach((material) => {
+        store.put(material)
+      });
+    };
+  }
 }

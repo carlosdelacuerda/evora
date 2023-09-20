@@ -2,7 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { MaterialInterface } from 'src/app/interfaces/material.interface';
+import { FilterTextService } from 'src/app/services/filter.service';
 import { ListService } from 'src/app/services/list.service';
+import { actionUpdateData } from 'src/app/state/actions/list.actions';
 import { selectListSuccess } from 'src/app/state/selectors/list.selectors';
 
 
@@ -41,7 +43,7 @@ export class BookComponent implements OnInit {
     public store: Store,
     private formBuilder: FormBuilder,
     public listService: ListService
-  ) {}
+    ) {}
 
   ngOnInit(): void {
     this.store.select(selectListSuccess).subscribe( ({materials}:any) =>
@@ -54,7 +56,7 @@ export class BookComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       amount: ['', [
         Validators.required,
-        Validators.max(+this.material.Available)!
+        Validators.max(+this.material?.Available)
       ]]
     });
   }
