@@ -1,9 +1,10 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { pipe } from 'rxjs';
+import { map } from 'rxjs';
 import { MaterialInterface } from 'src/app/interfaces/material.interface';
 import { FilterTextService } from 'src/app/services/filter.service';
+import { actionNavigate } from 'src/app/state/actions/navigate.actions';
 import { selectListSuccess } from 'src/app/state/selectors/list.selectors';
 
 @Component({
@@ -13,7 +14,7 @@ import { selectListSuccess } from 'src/app/state/selectors/list.selectors';
   providers: [FilterTextService]
 })
 export class DetailComponent implements OnInit {
-
+  
   material: MaterialInterface = {
     id: 0,
     Material: '',
@@ -35,11 +36,9 @@ export class DetailComponent implements OnInit {
   }
 
   materials: MaterialInterface[] = [
-    this.material
+      this.material
   ];
-
   rowIndex: number = 0;
-
   filterTS:EventEmitter<any> = new EventEmitter
 
   constructor (
@@ -50,21 +49,34 @@ export class DetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.rowIndex = this.config.data;
-    this.store.select(selectListSuccess).subscribe( pipe(({materials}:any) => {
+    this.store.select(selectListSuccess).pipe(
+      map(({materials}:any) => materials)
+    )
+    .subscribe( (materials:MaterialInterface[]) => {
       this.materials = materials;
       this.getMaterial()
-    }))  
+    })
+   
   }
 
   getMaterial() {
-    this.material = this.materials.find((mat) => mat.id == this.rowIndex+1)!
+      let matList:MaterialInterface[] = []
+      let id: number = 0;
+      this.materials.forEach((mat:MaterialInterface) => {
+        id++;
+        let object:MaterialInterface
+        object = {...mat, id}
+        matList.push(object);
+      })
+      this.material = matList.find((mat) => mat?.id == this.rowIndex+1)!;
   }
 
   navigateMaterial(newRowIndex:number) {
     this.filterTextService.emitResetInput()
     this.rowIndex = newRowIndex;
     this.getMaterial();
-    this.config.header = this.material.DescTxt;
+    this.config.header = this.material?.DescTxt;
+    this.store.dispatch(actionNavigate({rowIndex:this.rowIndex}))
   }
 
 }

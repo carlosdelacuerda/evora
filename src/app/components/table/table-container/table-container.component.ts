@@ -91,9 +91,8 @@ export class TableContainerComponent implements OnInit, OnDestroy {
     this.subscription = this.store$.subscribe(({materials}:any) => {
       this.materialsList = materials;
       if (this.browserAllowDB && (this.materialsList.length > 0)) {
-        this.listService.createDB(this.materialsList)
+        this.listService.createDB(this.materialsList);
       }
     });
   } 
-
 }

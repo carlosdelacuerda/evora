@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import * as actions from '../actions/list.actions';
-import {  MaterialInterface, ReducerListInterface } from 'src/app/interfaces/material.interface';
+import {  ReducerListInterface } from 'src/app/interfaces/material.interface';
 
   export const initialListState: ReducerListInterface = {
     type: '',
