@@ -12,7 +12,7 @@ export class FilterComponent {
   @Output() filterMaterials = new EventEmitter<string>();
 
   constructor(service: FilterTextService) {
-    service.$emitter.subscribe(() => {
+    service.$emitterFilter.subscribe(() => {
       this.filter()
     });
   }

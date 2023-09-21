@@ -1,3 +1,5 @@
+<p-toast></p-toast>
+<p-confirmPopup></p-confirmPopup>
 <form [formGroup]="formGroup">
     <div class="alert-amount red"
     *ngIf="this.formGroup.get('amount')?.errors?.['max']">
@@ -8,10 +10,11 @@
         [inputStyle]="{'width':'90px'}"
         mode="decimal"
         [min]="0"
+        [showButtons]="true"
         >
     </p-inputNumber>
     <p-button label="Book"
-        (click)="book()"
+        (click)="book($event)"
         [disabled]="formGroup.invalid">
     </p-button> 
 </form>

@@ -11,6 +11,7 @@ import { DetailComponent } from './detail/detail.component';
 import { BookComponent } from './book/book.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FilterModule } from '../utilities/filter/filter.module';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { FilterModule } from '../utilities/filter/filter.module';
     DynamicDialogModule,
     ToastModule,
     ReactiveFormsModule,
-    FilterModule
+    FilterModule,
+    ConfirmPopupModule
   ],
   exports: [
     TableContainerComponent

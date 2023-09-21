@@ -4,6 +4,8 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MaterialInterface } from 'src/app/interfaces/material.interface';
 import { DetailComponent } from '../detail/detail.component';
 import { MessageService } from 'primeng/api';
+import { actionNavigate, actionOpen } from 'src/app/state/actions/navigate.actions';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-table-list',
@@ -15,17 +17,20 @@ export class TableListComponent {
 
   ref: DynamicDialogRef | undefined;
 
-  constructor(
-    public dialogService: DialogService
-    ) {}
-
   @Input() materialsList: MaterialInterface[] = []
 
+  constructor(
+    public dialogService: DialogService,
+    public store: Store
+    ) {}
+
   show(material:string, rowIndex:number) {
+    this.store.dispatch(actionOpen({open:true}))
+    this.store.dispatch(actionNavigate({rowIndex:rowIndex}))
     this.ref = this.dialogService.open(DetailComponent, {
       data: rowIndex,
       width: '70%',
-      height: '100%',
+      height: 'auto',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10,
       maximizable: true,
@@ -35,5 +40,4 @@ export class TableListComponent {
       styleClass: 'detail-modal'
     });
   }
-
 }

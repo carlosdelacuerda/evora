@@ -22,9 +22,8 @@ import { FilterPipe } from './pipes/filter.pipe';
     HttpClientModule,
     BrowserAnimationsModule,
     StoreModule.forRoot( ROOT_REDUCERS ),
-    EffectsModule.forRoot( [ListEffects] ),
+    EffectsModule.forRoot( [ListEffects] )
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

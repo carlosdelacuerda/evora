@@ -3,8 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MaterialInterface, MaterialsListInterface } from '../interfaces/material.interface';
 import { Store } from '@ngrx/store';
 import { FilterTextService } from './filter.service';
-import { actionList, actionStoreDBMaterials, actionUpdateData } from '../state/actions/list.actions';
-import { selectListSuccess } from '../state/selectors/list.selectors';
+import { actionUpdateData } from '../state/actions/list.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +29,7 @@ export class ListService {
       const store = transaction.objectStore("materials");
       const request = store.get(idMaterial)
       request.onerror = () => {
-        alert()
+        alert('Request error')
       };
       request.onsuccess = () => {
         const data = request.result;
@@ -42,8 +41,7 @@ export class ListService {
         };
         requestUpdate.onsuccess = () =>{
           this.store.dispatch(actionUpdateData({material:data, index:idMaterial-1}));
-          alert('Book success');
-          this.filterTextService.emitEvent()
+          this.filterTextService.emitFilter()
         };
       };
     }
