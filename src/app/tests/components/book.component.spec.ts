@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BookComponent } from '../components/table/book/book.component';
+import { BookComponent } from '../../components/table/book/book.component';
 
 
 describe('BookComponent', () => {

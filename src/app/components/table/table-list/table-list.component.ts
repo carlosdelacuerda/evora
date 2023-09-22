@@ -39,5 +39,8 @@ export class TableListComponent {
       dismissableMask: true,
       styleClass: 'detail-modal'
     });
+    this.ref.onDestroy.subscribe(() => {
+      this.store.dispatch(actionOpen({open:false}))
+    })
   }
 }

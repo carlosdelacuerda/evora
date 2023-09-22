@@ -33,8 +33,8 @@ export class ListService {
       };
       request.onsuccess = () => {
         const data = request.result;
-        data.Available = (+data.Available - (+amount)).toString();
-        data.Quantity = (+data.Quantity +amount).toString();
+        data.Available = (+data.Available + -amount).toString();
+        data.Quantity = (+data.Quantity + +amount).toString();
         const requestUpdate = store.put(data);
         requestUpdate.onerror = () => {
           alert('Book error')

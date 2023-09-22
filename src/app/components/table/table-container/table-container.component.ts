@@ -28,7 +28,7 @@ export class TableContainerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.checkIndexedDB()
+    this.checkIndexedDB();
   }
 
   ngOnDestroy(): void {
@@ -88,7 +88,8 @@ export class TableContainerComponent implements OnInit, OnDestroy {
   getRemoteMaterials(){
     this.store.dispatch(actionList());
     this.store$ = this.store.select(selectListSuccess)
-    this.subscription = this.store$.subscribe(({materials}:any) => {
+    this.subscription = this.store$.pipe(take(2))
+    .subscribe(({materials}:any) => {
       this.materialsList = materials;
       if (this.browserAllowDB && (this.materialsList.length > 0)) {
         this.listService.createDB(this.materialsList);
