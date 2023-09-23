@@ -24,6 +24,7 @@ export class BookComponent implements OnInit, OnDestroy {
   @Input() idMaterial: number = 0;
   rowIndex: Subscription = new Subscription;
   listMaterials: Subscription = new Subscription;
+  openDialog: Subscription = new Subscription;
   material: undefined | MaterialInterface = {
     id: 0,
     Material: '',
@@ -67,11 +68,11 @@ export class BookComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.staticIndex = this.idMaterial;
     this.dynamicIndex = this.idMaterial;
-    this.store.select(selectOpen)
+    this.openDialog = this.store.select(selectOpen)
     .subscribe((modal) => {
       this.openModal = !!modal;
       if(!modal) {
-        this.getMaterial(this.staticIndex)
+        this.getMaterial(this.staticIndex-1)
       }
     });
     this.rowIndex = this.store.select(selectNavigate)
@@ -82,6 +83,7 @@ export class BookComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.openDialog.unsubscribe()
     this.listMaterials.unsubscribe();
     this.rowIndex.unsubscribe();
   }
