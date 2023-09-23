@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Observable, Subscription, first } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { MaterialInterface } from 'src/app/interfaces/material.interface';
 import { FilterTextService } from 'src/app/services/filter.service';
 import { ListService } from 'src/app/services/list.service';
@@ -24,7 +24,6 @@ export class BookComponent implements OnInit, OnDestroy {
   @Input() idMaterial: number = 0;
   rowIndex: Subscription = new Subscription;
   listMaterials: Subscription = new Subscription;
-  openState$: Observable<any> = new Observable;
   material: undefined | MaterialInterface = {
     id: 0,
     Material: '',
@@ -88,7 +87,7 @@ export class BookComponent implements OnInit, OnDestroy {
   }
 
   getMaterial(index:number){
-    this.listMaterials = this.store.select(selectListSuccess).pipe(first())
+    this.listMaterials = this.store.select(selectListSuccess).pipe()
     .subscribe( ({materials}:any) => {
       this.materialsList = materials
       this.material = this.materialsList[index];
@@ -104,9 +103,9 @@ export class BookComponent implements OnInit, OnDestroy {
   }
 
   buildForm() {
-    if(!this.openModal) {
-      this.material = this.materialsList[this.staticIndex-1]
-    }
+    this.material = this.openModal ?
+    this.materialsList[this.dynamicIndex-1] : 
+    this.materialsList[this.staticIndex-1]
     this.formGroup = this.formBuilder.group({
       amount: ['', [
         Validators.required,
@@ -124,7 +123,7 @@ export class BookComponent implements OnInit, OnDestroy {
           accept: () => {
               const index = this.openModal ? this.dynamicIndex : this.staticIndex;
               this.listService.bookMaterial(this.formGroup.value.amount, index);
-              this.getMaterial(index)
+              this.navigate(index-1)
               this.messageService.add({ severity: 'info', summary: 'Booked', detail: 'Booked done' });
           },
           reject: () => {
