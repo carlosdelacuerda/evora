@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
@@ -46,6 +46,7 @@ export class BookComponent implements OnInit, OnDestroy {
   };
   alertAmount: boolean = false;
   formGroup:any = FormGroup;
+  amount:any = FormControl;
   staticIndex: number = 0;
   dynamicIndex: number = 0;
   materialsList: MaterialInterface[] = []
@@ -63,6 +64,10 @@ export class BookComponent implements OnInit, OnDestroy {
       this.filterService.$emitterResetInput.subscribe(() => {
         this.buildForm()
       });
+      this.formGroup = this.formBuilder.group({});
+      this.formGroup = new FormGroup({
+        amount: new FormControl()
+     });
     }
 
   ngOnInit(): void {

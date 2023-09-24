@@ -1,7 +1,3 @@
-# Bug in NGRX
-
-If the NGRX effects module does not install automatically, use the following command:
-`npm install github:ngrx/store-devtools-builds`
 
 
 # Evora
